@@ -26,17 +26,17 @@ class Main {
 		Scanner input = new Scanner(System.in);
 	
 		System.out.println("Enter inital text");
-		//String userText = input.nextLine();
-		String userText = "How are you doing today?";
-		System.out.println(userText);
+		String userText = input.nextLine();
+		//String userText = "How are you doing today?";
+		//System.out.println(userText);
 		
 		
 		String userEdit = "";
 		do {
 		System.out.println("What edits do you want to make?");
 		userEdit = input.nextLine();
-		//userEdit = "Change today to tomorrow";
-		//System.out.println(userText);
+		//userEdit = "Change the first word to happy";
+		//System.out.println(userEdit);
 		
 		List<String> text = new ArrayList<>();
 		text.add(userEdit);
@@ -111,11 +111,14 @@ class Main {
 	      
 	      Map<String, Value> fields = parameters.getFieldsMap();
 	      String modifier = fields.get("modifiers").getStringValue();
-	      System.out.println(modifier);	  
 	      if (modifier.equals("change")) {
 	    	  String originalPart = fields.get("originalPart").getStringValue();
 	    	  String newPart = fields.get("newPart").getStringValue();
-	    	  newModifier = new Change(originalPart, newPart, originalText);
+	    	  String wordLocation = Double.toString(fields.get("ordinal").getNumberValue());
+	    	  if (wordLocation.equals("0.0")) {
+	    		  wordLocation = fields.get("ordinal").getStringValue();
+	    	  }
+	    	  newModifier = new Change(originalPart, newPart, wordLocation, originalText);
 	      }
 	      
 	      
