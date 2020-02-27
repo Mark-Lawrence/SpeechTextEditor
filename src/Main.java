@@ -8,11 +8,14 @@ import com.google.cloud.dialogflow.v2.SessionsClient;
 import com.google.cloud.dialogflow.v2.TextInput;
 import com.google.cloud.dialogflow.v2.TextInput.Builder;
 import com.google.common.collect.Maps;
-
+import com.google.protobuf.Descriptors.Descriptor;
+import com.google.protobuf.Descriptors.FieldDescriptor;
+import com.google.protobuf.Struct;
+import com.google.protobuf.Value;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-
+import java.util.Scanner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +23,39 @@ import java.util.Map;
 
 class Main {
 	public static void main(String[] args){
-		System.out.println("Hello world");
+		Scanner input = new Scanner(System.in);
+	
+		System.out.println("Enter inital text");
+		//String userText = input.nextLine();
+		String userText = "How are you doing today?";
+		System.out.println(userText);
+		
+		
+		String userEdit = "";
+		do {
+		System.out.println("What edits do you want to make?");
+		userEdit = input.nextLine();
+		//userEdit = "Change today to tomorrow";
+		//System.out.println(userText);
+		
 		List<String> text = new ArrayList<>();
-		text.add("Swap happy with mad");
+		text.add(userEdit);
 		try {
-			detectIntentTexts("texteditor-vvvhmi", text, "123456789", "en-US");
+			Modifier newModifier = detectIntentTexts("texteditor-vvvhmi", text, "123456789", "en-US", userText);
+			if (newModifier != null) {
+				userText = newModifier.doModification();
+				System.out.println(userText);
+			} else {
+				System.out.println("Input not understood");
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//userEdit = "Done";
+		} while (!userEdit.equals("Done"));
+		
+
 	}
 
 	
@@ -44,17 +71,20 @@ class Main {
 	 * @param languageCode Language code of the query.
 	 * @return The QueryResult for each input text.
 	 */
-	public static Map<String, QueryResult> detectIntentTexts(
+	public static Modifier detectIntentTexts(
 	    String projectId,
 	    List<String> texts,
 	    String sessionId,
-	    String languageCode) throws Exception {
+	    String languageCode,
+	    String originalText) throws Exception {
+		
+	  Modifier newModifier = null;
 	  Map<String, QueryResult> queryResults = Maps.newHashMap();
 	  // Instantiates a client
 	  try (SessionsClient sessionsClient = SessionsClient.create()) {
 	    // Set the session name using the sessionId (UUID) and projectID (my-project-id)
 	    SessionName session = SessionName.of(projectId, sessionId);
-	    System.out.println("Session Path: " + session.toString());
+	    //System.out.println("Session Path: " + session.toString());
 
 	    // Detect intents for each text input
 	    for (String text : texts) {
@@ -70,17 +100,29 @@ class Main {
 	      // Display the query result
 	      QueryResult queryResult = response.getQueryResult();
 
-	      System.out.println("====================");
-	      System.out.format("Query Text: '%s'\n", queryResult.getQueryText());
-	      System.out.format("Detected Intent: %s (confidence: %f)\n",
-	          queryResult.getIntent().getDisplayName(), queryResult.getIntentDetectionConfidence());
-	      System.out.format("Fulfillment Text: '%s'\n", queryResult.getFulfillmentText());
-	      System.out.format("Variables: '%s'\n", queryResult.getParameters());
-
+//	      System.out.println("====================");
+//	      System.out.format("Query Text: '%s'\n", queryResult.getQueryText());
+//	      System.out.format("Detected Intent: %s (confidence: %f)\n",
+//	          queryResult.getIntent().getDisplayName(), queryResult.getIntentDetectionConfidence());
+//	      System.out.format("Fulfillment Text: '%s'\n", queryResult.getFulfillmentText());
+//	      System.out.format("Variables: '%s'\n", queryResult.getParameters());
+	      
+	      Struct parameters = queryResult.getParameters();
+	      
+	      Map<String, Value> fields = parameters.getFieldsMap();
+	      String modifier = fields.get("modifiers").getStringValue();
+	      System.out.println(modifier);	  
+	      if (modifier.equals("change")) {
+	    	  String originalPart = fields.get("originalPart").getStringValue();
+	    	  String newPart = fields.get("newPart").getStringValue();
+	    	  newModifier = new Change(originalPart, newPart, originalText);
+	      }
+	      
+	      
 	      queryResults.put(text, queryResult);
 	    }
 	  }
-	  return queryResults;
+	  return newModifier;
 	}	
 }
 
