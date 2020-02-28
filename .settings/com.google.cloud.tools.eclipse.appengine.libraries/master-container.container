@@ -128,6 +128,68 @@
     },
     {
       "accessRules": [],
+      "sourceAttachmentPath": "BIN/com/google/api/grpc/proto-google-cloud-speech-v1/1.22.3/proto-google-cloud-speech-v1-1.22.3-sources.jar",
+      "path": "com/google/api/grpc/proto-google-cloud-speech-v1/1.22.3/proto-google-cloud-speech-v1-1.22.3.jar",
+      "attributes": [
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.repository",
+          "value": "central"
+        },
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.groupid",
+          "value": "com.google.api.grpc"
+        },
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.artifactId",
+          "value": "proto-google-cloud-speech-v1"
+        },
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.type",
+          "value": "jar"
+        },
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.version",
+          "value": "1.22.3"
+        },
+        {
+          "name": "org.eclipse.jst.component.dependency",
+          "value": "/WEB-INF/lib"
+        }
+      ]
+    },
+    {
+      "accessRules": [],
+      "sourceAttachmentPath": "BIN/com/google/api/grpc/proto-google-cloud-speech-v1p1beta1/0.75.3/proto-google-cloud-speech-v1p1beta1-0.75.3-sources.jar",
+      "path": "com/google/api/grpc/proto-google-cloud-speech-v1p1beta1/0.75.3/proto-google-cloud-speech-v1p1beta1-0.75.3.jar",
+      "attributes": [
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.repository",
+          "value": "central"
+        },
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.groupid",
+          "value": "com.google.api.grpc"
+        },
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.artifactId",
+          "value": "proto-google-cloud-speech-v1p1beta1"
+        },
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.type",
+          "value": "jar"
+        },
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.version",
+          "value": "0.75.3"
+        },
+        {
+          "name": "org.eclipse.jst.component.dependency",
+          "value": "/WEB-INF/lib"
+        }
+      ]
+    },
+    {
+      "accessRules": [],
       "sourceAttachmentPath": "BIN/com/google/api/grpc/proto-google-common-protos/1.17.0/proto-google-common-protos-1.17.0-sources.jar",
       "path": "com/google/api/grpc/proto-google-common-protos/1.17.0/proto-google-common-protos-1.17.0.jar",
       "attributes": [
@@ -367,6 +429,37 @@
         {
           "name": "com.google.cloud.tools.eclipse.appengine.libraries.version",
           "value": "0.120.2"
+        },
+        {
+          "name": "org.eclipse.jst.component.dependency",
+          "value": "/WEB-INF/lib"
+        }
+      ]
+    },
+    {
+      "accessRules": [],
+      "sourceAttachmentPath": "BIN/com/google/cloud/google-cloud-speech/1.22.3/google-cloud-speech-1.22.3-sources.jar",
+      "path": "com/google/cloud/google-cloud-speech/1.22.3/google-cloud-speech-1.22.3.jar",
+      "attributes": [
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.repository",
+          "value": "central"
+        },
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.groupid",
+          "value": "com.google.cloud"
+        },
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.artifactId",
+          "value": "google-cloud-speech"
+        },
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.type",
+          "value": "jar"
+        },
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.version",
+          "value": "1.22.3"
         },
         {
           "name": "org.eclipse.jst.component.dependency",
@@ -1487,6 +1580,32 @@
       "mavenCoordinates": {
         "repository": "central",
         "groupId": "com.google.api.grpc",
+        "artifactId": "proto-google-cloud-speech-v1",
+        "version": "1.22.3",
+        "type": "jar"
+      },
+      "export": true,
+      "fixedVersion": false,
+      "pinned": false
+    },
+    {
+      "filters": [],
+      "mavenCoordinates": {
+        "repository": "central",
+        "groupId": "com.google.api.grpc",
+        "artifactId": "proto-google-cloud-speech-v1p1beta1",
+        "version": "0.75.3",
+        "type": "jar"
+      },
+      "export": true,
+      "fixedVersion": false,
+      "pinned": false
+    },
+    {
+      "filters": [],
+      "mavenCoordinates": {
+        "repository": "central",
+        "groupId": "com.google.api.grpc",
         "artifactId": "proto-google-common-protos",
         "version": "1.17.0",
         "type": "jar"
@@ -1580,6 +1699,19 @@
         "groupId": "com.google.cloud",
         "artifactId": "google-cloud-dialogflow",
         "version": "0.120.2",
+        "type": "jar"
+      },
+      "export": true,
+      "fixedVersion": true,
+      "pinned": false
+    },
+    {
+      "filters": [],
+      "mavenCoordinates": {
+        "repository": "central",
+        "groupId": "com.google.cloud",
+        "artifactId": "google-cloud-speech",
+        "version": "1.22.3",
         "type": "jar"
       },
       "export": true,

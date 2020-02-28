@@ -23,6 +23,11 @@ import java.util.Map;
 
 class Main {
 	public static void main(String[] args){
+		
+		//SpeechToText.sampleRecognize();
+		JavaSoundRecorder.captureSpeech();		
+		
+		/*
 		Scanner input = new Scanner(System.in);
 	
 		System.out.println("Enter inital text");
@@ -55,7 +60,7 @@ class Main {
 		//userEdit = "Done";
 		} while (!userEdit.equals("Done"));
 		
-
+	*/
 	}
 
 	
