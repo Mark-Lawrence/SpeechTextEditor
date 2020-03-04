@@ -129,7 +129,7 @@ class Main {
 		    	  newModifier = new Change(originalPart, newPart, wordLocation, originalText);
 		      }
 		      
-		      if (modifier.equals("add")) {
+		      else if (modifier.equals("add")) {
 		    	  String newPart = fields.get("newPart").getStringValue();
 		    	  String locationReference = fields.get("locationReference").getStringValue();
 		    	  String wordReference = fields.get("wordReference").getStringValue();
@@ -137,10 +137,17 @@ class Main {
 		    	  if (numberReference.equals("0.0")) {
 		    		  numberReference = fields.get("ordinal").getStringValue();
 		    	  }
-		    	  System.out.println("ADD");
 		    	  newModifier = new Add(newPart, locationReference, wordReference, numberReference, originalText);
 		      }
-		      
+		      else if (modifier.equals("delete")) {
+		    	  String originalPart = fields.get("originalPart").getStringValue();
+		    	  String numberOfDeletes = fields.get("numberOfDeletes").getStringValue();
+		    	  String numberReference = Double.toString(fields.get("ordinal").getNumberValue());
+		    	  if (numberReference.equals("0.0")) {
+		    		  numberReference = fields.get("ordinal").getStringValue();
+		    	  }
+		    	  newModifier = new Delete(originalPart,numberOfDeletes, numberReference, originalText);
+		      }
 	      }
 	    }
 	  }

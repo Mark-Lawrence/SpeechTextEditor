@@ -30,6 +30,8 @@ public class Add extends Modifier{
 //			System.out.println("New part, location reference");
 //			System.out.println("Add PDQ to the end of the sentence");
 			return addBeginningOrEnd();
+		} else if (newPart != "") {
+			return (getOriginalText() +" "+ newPart);
 		}
 		return getOriginalText();
 	}
@@ -40,14 +42,17 @@ public class Add extends Modifier{
 		if (originalText.contains(wordReference)){
 			int index = originalText.indexOf(wordReference);
 			if (locationReference.equals("after")) {
-				System.out.println(originalText.length() + " "+ (index+1+wordReference.length()));
 				if (originalText.length() > (index+1+wordReference.length())) {
 					return originalText.substring(0, index+wordReference.length())+" "+newPart+" "+originalText.substring(index+1+wordReference.length(), originalText.length());
 				} else {
 					return originalText.substring(0, index+wordReference.length())+" "+newPart+" ";
 				}
 			} else if (locationReference.equals("before")) {
-				return originalText.substring(0, index-1)+" "+newPart+" "+originalText.substring(index, originalText.length());
+				if ((index-1) > 0) {
+					return originalText.substring(0, index-1)+" "+newPart+" "+originalText.substring(index, originalText.length());
+				} else {
+					return newPart+" "+originalText.substring(index, originalText.length());
+				} 
 			}
 		}
 		return newText;
