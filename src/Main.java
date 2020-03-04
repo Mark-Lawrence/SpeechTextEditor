@@ -24,10 +24,9 @@ import java.util.Map;
 class Main {
 	public static void main(String[] args){
 		
+		//JavaSoundRecorder.captureSpeech();		
 		//SpeechToText.sampleRecognize();
-		JavaSoundRecorder.captureSpeech();		
 		
-		/*
 		Scanner input = new Scanner(System.in);
 	
 		System.out.println("Enter inital text");
@@ -60,7 +59,7 @@ class Main {
 		//userEdit = "Done";
 		} while (!userEdit.equals("Done"));
 		
-	*/
+	
 	}
 
 	
@@ -84,7 +83,6 @@ class Main {
 	    String originalText) throws Exception {
 		
 	  Modifier newModifier = null;
-	  Map<String, QueryResult> queryResults = Maps.newHashMap();
 	  // Instantiates a client
 	  try (SessionsClient sessionsClient = SessionsClient.create()) {
 	    // Set the session name using the sessionId (UUID) and projectID (my-project-id)
@@ -97,7 +95,10 @@ class Main {
 	      Builder textInput = TextInput.newBuilder().setText(text).setLanguageCode(languageCode);
 
 	      // Build the query with the TextInput
+	      
+	      //CHANGE THIS TO SOMETHING LIKE THIS: https://cloud.google.com/dialogflow/docs/detect-intent-stream
 	      QueryInput queryInput = QueryInput.newBuilder().setText(textInput).build();
+	      //QueryInput = waveInput =QueryInput.newBuilder().set
 
 	      // Performs the detect intent request
 	      DetectIntentResponse response = sessionsClient.detectIntent(session, queryInput);
@@ -115,19 +116,32 @@ class Main {
 	      Struct parameters = queryResult.getParameters();
 	      
 	      Map<String, Value> fields = parameters.getFieldsMap();
-	      String modifier = fields.get("modifiers").getStringValue();
-	      if (modifier.equals("change")) {
-	    	  String originalPart = fields.get("originalPart").getStringValue();
-	    	  String newPart = fields.get("newPart").getStringValue();
-	    	  String wordLocation = Double.toString(fields.get("ordinal").getNumberValue());
-	    	  if (wordLocation.equals("0.0")) {
-	    		  wordLocation = fields.get("ordinal").getStringValue();
-	    	  }
-	    	  newModifier = new Change(originalPart, newPart, wordLocation, originalText);
+	      
+	      if (fields.containsKey("modifiers")) {
+	    	  String modifier = fields.get("modifiers").getStringValue();
+		      if (modifier.equals("change")) {
+		    	  String originalPart = fields.get("originalPart").getStringValue();
+		    	  String newPart = fields.get("newPart").getStringValue();
+		    	  String wordLocation = Double.toString(fields.get("ordinal").getNumberValue());
+		    	  if (wordLocation.equals("0.0")) {
+		    		  wordLocation = fields.get("ordinal").getStringValue();
+		    	  }
+		    	  newModifier = new Change(originalPart, newPart, wordLocation, originalText);
+		      }
+		      
+		      if (modifier.equals("add")) {
+		    	  String newPart = fields.get("newPart").getStringValue();
+		    	  String locationReference = fields.get("locationReference").getStringValue();
+		    	  String wordReference = fields.get("wordReference").getStringValue();
+		    	  String numberReference = Double.toString(fields.get("ordinal").getNumberValue());
+		    	  if (numberReference.equals("0.0")) {
+		    		  numberReference = fields.get("ordinal").getStringValue();
+		    	  }
+		    	  System.out.println("ADD");
+		    	  newModifier = new Add(newPart, locationReference, wordReference, numberReference, originalText);
+		      }
+		      
 	      }
-	      
-	      
-	      queryResults.put(text, queryResult);
 	    }
 	  }
 	  return newModifier;

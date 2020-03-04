@@ -1,8 +1,8 @@
 
 public class Change extends Modifier{
+	
 	private String originalPart;
 	private String newPart;
-	
 	private String wordLocation;
 	
 	
@@ -57,7 +57,6 @@ public class Change extends Modifier{
 			}
 			catch (NumberFormatException e)
 			{
-				System.out.println("FAIL");
 				if (wordLocation.equalsIgnoreCase("last")) {
 					int startOfWordIndex = originalText.lastIndexOf(" ")+1;
 					newText = originalText.substring(0, startOfWordIndex)+newPart;
