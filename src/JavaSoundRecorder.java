@@ -1,42 +1,35 @@
 import javax.sound.sampled.*;
 import java.io.*;
-import java.security.Permission;
+import java.util.Scanner;
 
 
 public class JavaSoundRecorder {
-    static final long RECORD_TIME = 10000;  // 10 minute
+    static final long RECORD_TIME = 7000;  // 10 minute
     File wavFile = new File("/Users/marklawrence/Desktop/test1.wav");
     AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
+    static boolean stopped = false;
     TargetDataLine line;
-	
+
     
     public static void captureSpeech() {
-    	checkPermissions();
+    	stopped = false;
         final JavaSoundRecorder recorder = new JavaSoundRecorder();
+       
+        // start recording        
+        try {
+			recorder.start();
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
  
-        // creates a new thread that waits for a specified
-        // of time before stopping
-        Thread stopper = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    Thread.sleep(RECORD_TIME);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-                recorder.finish();
-            }
-        });
- 
-        stopper.start();
- 
-        // start recording
-        recorder.start();
+       
     }
     
     AudioFormat getAudioFormat() {
         float sampleRate = 16000;
-        int sampleSizeInBits = 8;
-        int channels = 2;
+        int sampleSizeInBits = 16;
+        int channels = 1;
         boolean signed = true;
         boolean bigEndian = true;
         AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits,
@@ -44,73 +37,63 @@ public class JavaSoundRecorder {
         return format;
     }
     
-    /**
-     * Captures the sound and record into a WAV file
-     */
-    private void start() {
-        try {
-            AudioFormat format = getAudioFormat();
-            DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
- 
-            // checks if system supports the data line
-            if (!AudioSystem.isLineSupported(info)) {
-                System.out.println("Line not supported");
-                System.exit(0);
-            }
-            line = (TargetDataLine) AudioSystem.getLine(info);
-            line.open(format);
-            line.start();   // start capturing
- 
-            System.out.println("Start capturing...");
- 
-            AudioInputStream ais = new AudioInputStream(line);
- 
-            System.out.println("Start recording...");
- 
-            // start recording
-            AudioSystem.write(ais, fileType, wavFile);
- 
-        } catch (LineUnavailableException ex) {
-            ex.printStackTrace();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-    }
     
-    private void finish() {
+    private void start() throws LineUnavailableException {
+        AudioFormat format = getAudioFormat();
+    	ByteArrayOutputStream out  = new ByteArrayOutputStream();
+    	DataLine.Info info = new DataLine.Info(TargetDataLine.class,
+    	                format); // format is an AudioFormat object
+
+    	line = (TargetDataLine) AudioSystem.getLine(info);
+    	line.open(format);
+    	
+    	int numBytesRead = 0;
+    	byte[] data = new byte[line.getBufferSize() / 5];
+    	
+    	// Begin audio capture.
+    	line.start();
+    	System.out.println("Capturing....");
+    	long counter = 0;    	
+    	WaitForUserStopRecording thread = new WaitForUserStopRecording();
+       
+    	while(thread.waitForUser.isAlive()) {
+    	    // Read the next chunk of data from the TargetDataLine.
+    	    numBytesRead =  line.read(data, 0, data.length);
+    	    // Save this chunk of data.
+    	    counter += numBytesRead;
+    	    out.write(data, 0, numBytesRead);
+    	}
+
         line.stop();
         line.close();
-        System.out.println("Finished");
-    }
-	
-    
-    private static void checkPermissions() {
-      SecurityManager sm = System.getSecurityManager();
-      
-      
-      if (sm != null)
-        {
-    	  System.out.println("Getting permission");
-          String perm = null;
-          perm = "record";
-//          switch (permission)
-//            {
-//            case PLAY:
-//              perm = "play";
-//              break;
-//
-//            case RECORD:
-//              perm = "record";
-//              break;
-//
-//            case ALL: default:
-//              perm = "*";
-//              break;
-//            }
+    	System.out.println("Done capturing...");
+    	byte[] fileData = out.toByteArray();
+    	InputStream inputStreamFile = new ByteArrayInputStream(fileData);
 
-          sm.checkPermission(new AudioPermission(perm));
-        }
+    	AudioInputStream imputStream = new AudioInputStream(inputStreamFile, format, counter);
+    	
+    	try {
+			AudioSystem.write(imputStream, fileType, wavFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("FAILED TO SAVE TO FLE");
+			e.printStackTrace();
+		}
+
     }
-	
-	
+}
+
+class WaitForUserStopRecording implements Runnable
+{
+   Thread waitForUser ;
+   WaitForUserStopRecording()
+   { 
+	  waitForUser = new Thread(this, "Stop recording thread");
+	  waitForUser.start();
+   }
+   public void run()
+   {
+	Scanner input = new Scanner(System.in);
+	input.nextLine();
+   }
 }

@@ -7,6 +7,7 @@ import com.google.cloud.dialogflow.v2.SessionName;
 import com.google.cloud.dialogflow.v2.SessionsClient;
 import com.google.cloud.dialogflow.v2.TextInput;
 import com.google.cloud.dialogflow.v2.TextInput.Builder;
+import com.google.cloud.speech.v1p1beta1.SpeechClient;
 import com.google.common.collect.Maps;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
@@ -21,31 +22,47 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class Main {
+public class Main {
 	public static void main(String[] args){
-		
-		//JavaSoundRecorder.captureSpeech();		
-		//SpeechToText.sampleRecognize();
-		
 		Scanner input = new Scanner(System.in);
-	
+		System.out.println("Initilizing....");
+		SessionsClient sessionsClient = null;
+		try {
+			sessionsClient = SessionsClient.create();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		SpeechClient speechClient = null;
+		try {
+			speechClient = SpeechClient.create();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+				
 		System.out.println("Enter inital text");
-		String userText = input.nextLine();
-		//String userText = "How are you doing today?";
-		//System.out.println(userText);
+		input.nextLine();
+		JavaSoundRecorder.captureSpeech();		
+		String userText = SpeechToText.sampleRecognize(speechClient);
 		
-		
+		//String userText = input.nextLine();
+		System.out.println(userText);
 		String userEdit = "";
+
 		do {
 		System.out.println("What edits do you want to make?");
-		userEdit = input.nextLine();
-		//userEdit = "Change the first word to happy";
-		//System.out.println(userEdit);
+		
+		input.nextLine();
+		
+		//userEdit = input.nextLine();
+		JavaSoundRecorder.captureSpeech();
 		
 		List<String> text = new ArrayList<>();
 		text.add(userEdit);
 		try {
-			Modifier newModifier = detectIntentTexts("texteditor-vvvhmi", text, "123456789", "en-US", userText);
+			Modifier newModifier = DetectIntentAudio.detectIntentAudio("texteditor-vvvhmi", "C:\\Users\\marklawrence\\Desktop\\test1.wav", "123456789", "en-US", userText, sessionsClient);
+			//Modifier newModifier = detectIntentTexts("texteditor-vvvhmi", text, "123456789", "en-US", userText);
 			if (newModifier != null) {
 				userText = newModifier.doModification();
 				System.out.println(userText);
@@ -64,6 +81,7 @@ class Main {
 
 	
 
+	//The code below isn't used anymore... only if typing instead of talking
 		/**
 	 * Returns the result of detect intent with texts as inputs.
 	 *

@@ -8,17 +8,18 @@
  import com.google.cloud.speech.v1p1beta1.SpeechRecognitionAlternative;
  import com.google.cloud.speech.v1p1beta1.SpeechRecognitionResult;
  import com.google.protobuf.ByteString;
- 
- import java.nio.file.Files;
+
+import java.io.IOException;
+import java.nio.file.Files;
  import java.nio.file.Path;
  import java.nio.file.Paths;
 
 
 public class SpeechToText {
-	public static void sampleRecognize() {
+	public static String sampleRecognize(SpeechClient speechClient) {
 		  // TODO(developer): Replace these variables before running the sample.
-		  String localFilePath = "/Users/marklawrence/Desktop/test1.wav";
-		  sampleRecognize(localFilePath);
+		  String localFilePath = "C:\\Users\\marklawrence\\Desktop\\test1.wav";
+		  return sampleRecognize(localFilePath, speechClient);
 		}
 	
 	/**
@@ -26,9 +27,8 @@ public class SpeechToText {
 	 *
 	 * @param localFilePath Path to local audio file, e.g. /path/audio.wav
 	 */
-	public static void sampleRecognize(String localFilePath) {
-	  try (SpeechClient speechClient = SpeechClient.create()) {
-		 System.out.println("Recognizing");
+	public static String sampleRecognize(String localFilePath, SpeechClient speechClient) {
+	System.out.println("Processing...");
 	    // The language of the supplied audio
 	    String languageCode = "en-US";
 
@@ -45,10 +45,16 @@ public class SpeechToText {
 	            .setLanguageCode(languageCode)
 	            .setSampleRateHertz(sampleRateHertz)
 	            .setEncoding(encoding)
-	            .setAudioChannelCount(2)
+	            .setAudioChannelCount(1)
 	            .build();
 	    Path path = Paths.get(localFilePath);
-	    byte[] data = Files.readAllBytes(path);
+	    byte[] data = null;
+		try {
+			data = Files.readAllBytes(path);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	    ByteString content = ByteString.copyFrom(data);
 	    RecognitionAudio audio = RecognitionAudio.newBuilder().setContent(content).build();
 	    RecognizeRequest request =
@@ -57,12 +63,10 @@ public class SpeechToText {
 	    for (SpeechRecognitionResult result : response.getResultsList()) {
 	      // First alternative is the most probable result
 	      SpeechRecognitionAlternative alternative = result.getAlternativesList().get(0);
-	      System.out.printf("Transcript: %s\n", alternative.getTranscript());
+	      //System.out.printf("Transcript: %s\n", alternative.getTranscript());
+	      return alternative.getTranscript();
 	    }
-	  } catch (Exception exception) {
-		  System.out.println("FAIL");
-	    System.err.println("Failed to create the client due to: " + exception);
-	  }
+	return "FAILED";
 	}
 	
 	

@@ -39,8 +39,9 @@ public class Add extends Modifier{
 	private String replaceWordAtLocation() {
 		String originalText = getOriginalText();
 		String newText = originalText;
-		if (originalText.contains(wordReference)){
-			int index = originalText.indexOf(wordReference);
+		originalText = originalText.toLowerCase();
+		if (originalText.contains(wordReference.toLowerCase())){
+			int index = originalText.indexOf(wordReference.toLowerCase());
 			if (locationReference.equals("after")) {
 				if (originalText.length() > (index+1+wordReference.length())) {
 					return originalText.substring(0, index+wordReference.length())+" "+newPart+" "+originalText.substring(index+1+wordReference.length(), originalText.length());

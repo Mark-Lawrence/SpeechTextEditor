@@ -1,3 +1,4 @@
+// [START dialogflow_detect_intent_streaming]
 // Imports the Google Cloud client library
 import com.google.api.gax.rpc.BidiStream;
 import com.google.cloud.dialogflow.v2.AudioEncoding;
@@ -82,3 +83,4 @@ class DetectIntentStream {
     }
   }
 }
+// [END dialogflow_detect_intent_streaming]

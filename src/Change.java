@@ -28,8 +28,9 @@ public class Change extends Modifier{
 	private String changeWords() {
 		String originalText = getOriginalText();
 		String newText = originalText;
-		if (originalText.contains(originalPart)){
-			newText = originalText.replaceFirst(originalPart, newPart);
+		originalText = originalText.toLowerCase();
+		if (originalText.contains(originalPart.toLowerCase())){
+			newText = originalText.replaceFirst(originalPart.toLowerCase(), newPart);
 		}
 		
 		return newText;

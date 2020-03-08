@@ -28,8 +28,9 @@ public class Delete extends Modifier{
 	private String deleteWord() {
 		String originalText = getOriginalText();
 		String newText = originalText;
-		if (originalText.contains(originalPart)){
-			int index = originalText.indexOf(originalPart);
+		originalText = originalText.toLowerCase();
+		if (originalText.contains(originalPart.toLowerCase())){
+			int index = originalText.indexOf(originalPart.toLowerCase());
 			if ((index+1+originalPart.length()) < originalText.length()) {
 				return originalText.substring(0, index)+originalText.substring(index+1+originalPart.length(), originalText.length());
 			} else {
