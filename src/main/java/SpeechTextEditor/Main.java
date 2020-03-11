@@ -57,8 +57,7 @@ public class Main {
             List<String> text = new ArrayList<>();
             text.add(userEdit);
             try {
-//                Modifier newModifier = DetectIntentAudio.detectIntentAudio("texteditor-vvvhmi", "C:\\Users\\marklawrence\\Desktop\\test1.wav", "123456789", "en-US", userText, sessionsClient);
-                Modifier newModifier = DetectIntentAudio.detectIntentAudio("texteditor-vvvhmi", "C:\\Users\\jhana\\OneDrive\\Desktop\\test1.wav", "123456789", "en-US", userText, sessionsClient);
+                Modifier newModifier = DetectIntentAudio.detectIntentAudio("texteditor-vvvhmi",  System.getProperty("user.dir")+"\\AudioRecording.wav", "123456789", "en-US", userText, sessionsClient);
 
                 //SpeechTextEditor.Modifier newModifier = detectIntentTexts("texteditor-vvvhmi", text, "123456789", "en-US", userText);
                 if (newModifier != null) {

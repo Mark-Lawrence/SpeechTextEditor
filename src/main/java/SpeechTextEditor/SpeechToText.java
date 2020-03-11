@@ -18,8 +18,7 @@ import java.nio.file.Paths;
 public class SpeechToText {
     public static String sampleRecognize(SpeechClient speechClient) {
         // TODO(developer): Replace these variables before running the sample.
-//        String localFilePath = "C:\\Users\\marklawrence\\Desktop\\test1.wav";
-        String localFilePath = "C:\\Users\\jhana\\OneDrive\\Desktop\\test1.wav";
+        String localFilePath = System.getProperty("user.dir")+"\\AudioRecording.wav";
         return sampleRecognize(localFilePath, speechClient);
     }
 

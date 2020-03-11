@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class JavaSoundRecorder {
     static final long RECORD_TIME = 7000;  // 10 minute
 //    File wavFile = new File("/Users/marklawrence/Desktop/test1.wav");
-    File wavFile = new File("C:\\Users\\jhana\\OneDrive\\Desktop\\test1.wav");
+    File wavFile = new File(System.getProperty("user.dir")+"\\AudioRecording.wav");
 
     AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
     static boolean stopped = false;
