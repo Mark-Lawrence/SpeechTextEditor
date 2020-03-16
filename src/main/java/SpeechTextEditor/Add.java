@@ -5,6 +5,7 @@ public class Add extends Modifier{
     private String locationReference;
     private String wordReference;
     private String numberReference;
+  
 
 
     public Add(String newPart, String locationReference, String wordReference, String numberReference, String originalText) {
@@ -16,14 +17,15 @@ public class Add extends Modifier{
     }
 
     public String doModification() {
+    	System.out.println(newPart);
         if (newPart != "" && wordReference != "" && locationReference != "") {
 //			System.out.println("New part, word reference, location reference");
 //			System.out.println("insert desk to the right of computer");
-            return replaceWordAtLocation();
+            return addWordAtLocation();
         } else if (newPart != "" && locationReference != "" && numberReference != "") {
 //			System.out.println("New part, location reference, number reference");
 //			System.out.println("SpeechTextEditor.Add happy after the fifth word");
-            return replaceWordByNumber();
+            return addWordByNumber();
         } else if (newPart != "" && locationReference != "") {
 //			System.out.println("New part, location reference");
 //			System.out.println("SpeechTextEditor.Add PDQ to the end of the sentence");
@@ -34,7 +36,7 @@ public class Add extends Modifier{
         return getOriginalText();
     }
 
-    private String replaceWordAtLocation() {
+    private String addWordAtLocation() {
         String originalText = getOriginalText();
         String newText = originalText;
         originalText = originalText.toLowerCase();
@@ -57,7 +59,7 @@ public class Add extends Modifier{
         return newText;
     }
 
-    private String replaceWordByNumber() {
+    private String addWordByNumber() {
         String originalText = getOriginalText();
         String newText = originalText;
 

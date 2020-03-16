@@ -28,7 +28,6 @@ public class SpeechToText {
      * @param localFilePath Path to local audio file, e.g. /path/audio.wav
      */
     public static String sampleRecognize(String localFilePath, SpeechClient speechClient) {
-        System.out.println("Processing...");
         // The language of the supplied audio
         String languageCode = "en-US";
 

@@ -97,7 +97,9 @@ class WaitForUserStopRecording implements Runnable
     }
     public void run()
     {
-        Scanner input = new Scanner(System.in);
-        input.nextLine();
+        do {
+        	System.out.println("");
+
+        } while(Main.isRecording);
     }
 }

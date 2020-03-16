@@ -19,7 +19,7 @@ public class Delete extends Modifier{
         if (originalPart != "") {
             return deleteWord();
         } else if (numberReference != "" && numberOfDeletes != "") {
-            //return deleteXWords();
+            //return deleteXWords();t
         } else if (numberReference != "") {
             return deleteWordAtLocation();
         }

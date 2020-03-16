@@ -2,7 +2,7 @@
 <project version="4">
   <component name="TerminalProjectOptionsProvider">
     <envs>
-      <env key="GOOGLE_APPLICATION_CREDENTIALS" value="C:\GOOGLE_APPLICATION_CREDENTIALS\TextEditor-50206ffd514b.json" />
+      <env key="GOOGLE_APPLICATION_CREDENTIALS" value="C:\GOOGLE_APPLICATION_CREDENTIALS\Speech-Text-Editor-3c5cec154664.json" />
     </envs>
   </component>
 </project>
