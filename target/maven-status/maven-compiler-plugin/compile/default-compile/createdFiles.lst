@@ -6,5 +6,6 @@ SpeechTextEditor\SpeechToText.class
 SpeechTextEditor\DetectIntentStream.class
 SpeechTextEditor\WaitForUserStopRecording.class
 SpeechTextEditor\JavaSoundRecorder.class
+SpeechTextEditor\Main$1.class
 SpeechTextEditor\Change.class
 SpeechTextEditor\Main.class
