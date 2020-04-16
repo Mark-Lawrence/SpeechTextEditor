@@ -41,6 +41,7 @@ public class Main {
 	
 	static boolean startInitialRecording = false;
 	static boolean startRecodingAudio = false;
+	static int outputFileIndex = 0;
 	
     public static void main(String[] args){
     	
@@ -87,9 +88,12 @@ public class Main {
         		System.out.println("Starting NOW");
         		startInitialRecording = false;
         		userText = recordInitialMessage();
+        		System.out.println("BAD");
         		headerLabel.setText(userText);
         		try {
-        			TextToSpeech.speak("Your message says: "+ userText);
+        			TextToSpeech test = new TextToSpeech();
+        			test.speak("Your message says: "+ userText, outputFileIndex);
+        			outputFileIndex += 1;
         		} catch (Exception e1) {
         			e1.printStackTrace();
         		}
@@ -99,11 +103,16 @@ public class Main {
         		System.out.println("Starting NOW 2");
         		startRecodingAudio = false;
         		recordAudio();
+        		System.out.println("TESTING");
         		try {
-        			TextToSpeech.speak("It now says: "+ userText);
+        			System.out.println("HERE");
+        			TextToSpeech test = new TextToSpeech();
+        			test.speak("It now says: "+ userText, outputFileIndex);
+        			outputFileIndex += 1;
         		} catch (Exception e1) {
         			e1.printStackTrace();
         		}
+        		System.out.println("TREFDDFDG");
         		headerLabel.setText(userText);
         		
         	}

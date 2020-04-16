@@ -1,10 +1,12 @@
-SpeechTextEditor\Delete.class
 SpeechTextEditor\DetectIntentAudio.class
+SpeechTextEditor\Delete.class
 SpeechTextEditor\Add.class
 SpeechTextEditor\Modifier.class
 SpeechTextEditor\SpeechToText.class
 SpeechTextEditor\DetectIntentStream.class
 SpeechTextEditor\WaitForUserStopRecording.class
+SpeechTextEditor\TextToSpeech.class
+SpeechTextEditor\Main$1.class
 SpeechTextEditor\JavaSoundRecorder.class
 SpeechTextEditor\Change.class
 SpeechTextEditor\Main.class

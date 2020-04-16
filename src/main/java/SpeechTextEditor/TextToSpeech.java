@@ -26,11 +26,6 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 
-
-/**
-* Google Cloud TextToSpeech API sample application. Example usage: mvn package exec:java
-* -Dexec.mainClass='com.example.texttospeech.QuickstartSample'
-*/
 public class TextToSpeech {
 	
 	private final static int BUFFER_SIZE = 128000;
@@ -39,14 +34,12 @@ public class TextToSpeech {
     private static AudioFormat audioFormat;
     private static SourceDataLine sourceLine;
 
-
-/** Demonstrates using the Text-to-Speech API. */
-public static void speak(String textToSpeak) throws Exception {
+public void speak(String textToSpeak, int index) throws Exception {
  // Instantiates a client
  try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
    // Set the text input to be synthesized
    SynthesisInput input = SynthesisInput.newBuilder().setText(textToSpeak).build();
-
+   System.out.println(input.getText());
    // Build the voice request, select the language code ("en-US") and the ssml voice gender
    // ("neutral")
    VoiceSelectionParams voice =
@@ -55,7 +48,6 @@ public static void speak(String textToSpeak) throws Exception {
            .setSsmlGender(SsmlVoiceGender.NEUTRAL)
            .build();
 
-   // Select the type of audio file you want returned
    AudioConfig audioConfig =
        AudioConfig.newBuilder().setAudioEncoding(AudioEncoding.LINEAR16).build();
 
@@ -70,10 +62,11 @@ public static void speak(String textToSpeak) throws Exception {
     
    //audioContents.writeTo(out);
    // Write the response to the output file.
-   try (OutputStream out = new FileOutputStream("output.wav")) {
+   try (OutputStream out = new FileOutputStream("output"+index+".wav")) {
      out.write(audioContents.toByteArray());
-     System.out.println("Audio content written to file \"output.wav\"");
-     playSound(System.getProperty("user.dir")+"\\output.wav");
+     System.out.println(textToSpeak);
+     System.out.println("Audio content written to file \"output"+index+".wav\"");
+     playSound(System.getProperty("user.dir")+"\\output"+index+".wav");
    }
  }
 }
