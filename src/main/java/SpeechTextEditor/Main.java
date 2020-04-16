@@ -48,6 +48,7 @@ public class Main {
     static boolean startInitialRecording = true;
     static boolean startRecodingAudio = false;
     static int i = 1;
+    static int outputFileIndex = 0;
 
     public static void main(String[] args) {
 
