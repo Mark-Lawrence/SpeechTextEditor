@@ -2,6 +2,7 @@ package SpeechTextEditor;
 
 import javax.sound.sampled.*;
 import java.io.*;
+import java.util.Date;
 import java.util.Scanner;
 
 public class JavaSoundRecorder {
@@ -54,14 +55,17 @@ public class JavaSoundRecorder {
         long counter = 0;
         WaitForUserStopRecording thread = new WaitForUserStopRecording();
 
+        // A short timer at first (for conitinuous recording) and then a longer timer
+        // (or wait for a pause) after data changes to a value larger than 0 or less
+        // than -1
         while (thread.waitForUser.isAlive()) {
             // Read the next chunk of data from the TargetDataLine.
             numBytesRead = line.read(data, 0, data.length);
             // Save this chunk of data.
             counter += numBytesRead;
+            // System.out.println("DATA: " + data[0]);
             out.write(data, 0, numBytesRead);
         }
-        System.out.println("COUNTER: " + counter);
         line.stop();
         line.close();
         System.out.println("Done capturing...");
@@ -90,11 +94,14 @@ class WaitForUserStopRecording implements Runnable {
     }
 
     public void run() {
-        int i = 0;
+        // int i = 0;
+        Date startTime = new Date();
+        float elapsedTime = new Date().getTime() - startTime.getTime();
         do {
-            System.out.println(i++);
+            System.out.print("");
+            elapsedTime = new Date().getTime() - startTime.getTime();
             // i++;
 
-        } while (Main.isRecording && i < 10000);
+        } while (Main.isRecording && elapsedTime < 10 * 1000);
     }
 }

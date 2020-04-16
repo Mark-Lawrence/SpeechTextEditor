@@ -16,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 
-
 /**
  * DialogFlow API Detect Intent sample with audio files.
  */
@@ -26,7 +25,8 @@ public class DetectIntentAudio {
     /**
      * Returns the result of detect intent with an audio file as input.
      *
-     * Using the same `session_id` between requests allows continuation of the conversation.
+     * Using the same `session_id` between requests allows continuation of the
+     * conversation.
      *
      * @param projectId     Project/Agent Id.
      * @param audioFilePath Path to the audio file.
@@ -34,20 +34,14 @@ public class DetectIntentAudio {
      * @param languageCode  Language code of the query.
      * @return QueryResult for the request.
      */
-    public static Modifier detectIntentAudio(
-            String projectId,
-            String audioFilePath,
-            String sessionId,
-            String languageCode,
-            String originalText,
-            SessionsClient sessionsClient)
-            throws Exception {
+    public static Modifier detectIntentAudio(String projectId, String audioFilePath, String sessionId,
+            String languageCode, String originalText, SessionsClient sessionsClient) throws Exception {
         // Instantiates a client
         Modifier newModifier = null;
 
         // Set the session name using the sessionId (UUID) and projectID (my-project-id)
         SessionName session = SessionName.of(projectId, sessionId);
-        //System.out.println("Session Path: " + session.toString());
+        // System.out.println("Session Path: " + session.toString());
 
         // Note: hard coding audioEncoding and sampleRateHertz for simplicity.
         // Audio encoding of the audio content sent in the query request.
@@ -55,8 +49,9 @@ public class DetectIntentAudio {
         int sampleRateHertz = 16000;
 
         // Instructs the speech recognizer how to process the audio content.
-        InputAudioConfig inputAudioConfig = InputAudioConfig.newBuilder()
-                .setAudioEncoding(audioEncoding) // audioEncoding = AudioEncoding.AUDIO_ENCODING_LINEAR_16
+        InputAudioConfig inputAudioConfig = InputAudioConfig.newBuilder().setAudioEncoding(audioEncoding) // audioEncoding
+                                                                                                          // =
+                                                                                                          // AudioEncoding.AUDIO_ENCODING_LINEAR_16
                 .setLanguageCode(languageCode) // languageCode = "en-US"
                 .setSampleRateHertz(sampleRateHertz) // sampleRateHertz = 16000
                 .build();
@@ -68,22 +63,23 @@ public class DetectIntentAudio {
         byte[] inputAudio = Files.readAllBytes(Paths.get(audioFilePath));
 
         // Build the DetectIntentRequest
-        DetectIntentRequest request = DetectIntentRequest.newBuilder()
-                .setSession(session.toString())
-                .setQueryInput(queryInput)
-                .setInputAudio(ByteString.copyFrom(inputAudio))
-                .build();
+        DetectIntentRequest request = DetectIntentRequest.newBuilder().setSession(session.toString())
+                .setQueryInput(queryInput).setInputAudio(ByteString.copyFrom(inputAudio)).build();
 
         // Performs the detect intent request
         DetectIntentResponse response = sessionsClient.detectIntent(request);
 
         // Display the query result
         QueryResult queryResult = response.getQueryResult();
-//      System.out.println("====================");
-        //System.out.format("Query Text: '%s'\n", queryResult.getQueryText());
-        //System.out.format("Detected Intent: %s (confidence: %f)\n",
-        //queryResult.getIntent().getDisplayName(), queryResult.getIntentDetectionConfidence());
-        //System.out.format("Fulfillment Text: '%s'\n", queryResult.getFulfillmentText());
+        // System.out.println("====================");
+        // System.out.format("Query Text: '%s'\n", queryResult.getQueryText());
+        // System.out.format("Detected Intent: %s (confidence: %f)\n",
+        // queryResult.getIntent().getDisplayName(),
+        // queryResult.getIntentDetectionConfidence());
+        // System.out.format("Fulfillment Text: '%s'\n",
+        // queryResult.getFulfillmentText());
+
+        System.out.println(queryResult.getQueryText());
 
         Struct parameters = queryResult.getParameters();
 
@@ -110,15 +106,14 @@ public class DetectIntentAudio {
                     numberReference = fields.get("ordinal").getStringValue();
                 }
                 newModifier = new Add(newPart, locationReference, wordReference, numberReference, originalText);
-            }
-            else if (modifier.equals("delete")) {
+            } else if (modifier.equals("delete")) {
                 String originalPart = fields.get("originalPart").getStringValue();
                 String numberOfDeletes = fields.get("numberOfDeletes").getStringValue();
                 String numberReference = Double.toString(fields.get("ordinal").getNumberValue());
                 if (numberReference.equals("0.0")) {
                     numberReference = fields.get("ordinal").getStringValue();
                 }
-                newModifier = new Delete(originalPart,numberOfDeletes, numberReference, originalText);
+                newModifier = new Delete(originalPart, numberOfDeletes, numberReference, originalText);
             }
         }
 
