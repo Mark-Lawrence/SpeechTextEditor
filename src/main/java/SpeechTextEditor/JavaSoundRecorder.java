@@ -2,31 +2,29 @@ package SpeechTextEditor;
 
 import javax.sound.sampled.*;
 import java.io.*;
+import java.util.Date;
 import java.util.Scanner;
 
-
 public class JavaSoundRecorder {
-    static final long RECORD_TIME = 7000;  // 10 minute
-//    File wavFile = new File("/Users/marklawrence/Desktop/test1.wav");
-    File wavFile = new File(System.getProperty("user.dir")+"\\AudioRecording.wav");
+    static final long RECORD_TIME = 700; // 10 minute (7000)
+    // File wavFile = new File("/Users/marklawrence/Desktop/test1.wav");
+    File wavFile = new File(System.getProperty("user.dir") + "\\AudioRecording.wav");
 
     AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
     static boolean stopped = false;
     TargetDataLine line;
 
-
     public static void captureSpeech() {
         stopped = false;
         final JavaSoundRecorder recorder = new JavaSoundRecorder();
 
-        // start recording        
+        // start recording
         try {
             recorder.start();
         } catch (LineUnavailableException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
 
     }
 
@@ -36,17 +34,14 @@ public class JavaSoundRecorder {
         int channels = 1;
         boolean signed = true;
         boolean bigEndian = true;
-        AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits,
-                channels, signed, bigEndian);
+        AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
         return format;
     }
 
-
     private void start() throws LineUnavailableException {
         AudioFormat format = getAudioFormat();
-        ByteArrayOutputStream out  = new ByteArrayOutputStream();
-        DataLine.Info info = new DataLine.Info(TargetDataLine.class,
-                format); // format is an AudioFormat object
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        DataLine.Info info = new DataLine.Info(TargetDataLine.class, format); // format is an AudioFormat object
 
         line = (TargetDataLine) AudioSystem.getLine(info);
         line.open(format);
@@ -60,14 +55,17 @@ public class JavaSoundRecorder {
         long counter = 0;
         WaitForUserStopRecording thread = new WaitForUserStopRecording();
 
-        while(thread.waitForUser.isAlive()) {
+        // A short timer at first (for conitinuous recording) and then a longer timer
+        // (or wait for a pause) after data changes to a value larger than 0 or less
+        // than -1
+        while (thread.waitForUser.isAlive()) {
             // Read the next chunk of data from the TargetDataLine.
-            numBytesRead =  line.read(data, 0, data.length);
+            numBytesRead = line.read(data, 0, data.length);
             // Save this chunk of data.
             counter += numBytesRead;
+            // System.out.println("DATA: " + data[0]);
             out.write(data, 0, numBytesRead);
         }
-
         line.stop();
         line.close();
         System.out.println("Done capturing...");
@@ -87,19 +85,23 @@ public class JavaSoundRecorder {
     }
 }
 
-class WaitForUserStopRecording implements Runnable
-{
-    Thread waitForUser ;
-    WaitForUserStopRecording()
-    {
+class WaitForUserStopRecording implements Runnable {
+    Thread waitForUser;
+
+    WaitForUserStopRecording() {
         waitForUser = new Thread(this, "Stop recording thread");
         waitForUser.start();
     }
-    public void run()
-    {
-        do {
-        	System.out.print("");
 
-        } while(Main.isRecording);
+    public void run() {
+        // int i = 0;
+        Date startTime = new Date();
+        float elapsedTime = new Date().getTime() - startTime.getTime();
+        do {
+            System.out.print("");
+            elapsedTime = new Date().getTime() - startTime.getTime();
+            // i++;
+
+        } while (Main.isRecording && elapsedTime < 10 * 1000);
     }
 }

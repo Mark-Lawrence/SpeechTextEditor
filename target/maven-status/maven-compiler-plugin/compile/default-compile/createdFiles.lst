@@ -8,5 +8,6 @@ SpeechTextEditor\WaitForUserStopRecording.class
 SpeechTextEditor\TextToSpeech.class
 SpeechTextEditor\Main$1.class
 SpeechTextEditor\JavaSoundRecorder.class
+SpeechTextEditor\Main$1.class
 SpeechTextEditor\Change.class
 SpeechTextEditor\Main.class
