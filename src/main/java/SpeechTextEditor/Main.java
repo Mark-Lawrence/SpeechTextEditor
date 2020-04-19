@@ -32,7 +32,7 @@ import java.util.Date;
 
 public class Main {
     // V.A.L.E == Voice Activated Language Editor
-    static String wakeWord = "okay vale";
+    static String wakeWord = "start";
     static int SLEEP_TIME = 10 * 1000;
     static Date startTime = new Date();
     static boolean botIsActive = false;
@@ -100,6 +100,7 @@ public class Main {
                 headerLabel.setText(userText);
                 try {
                     TextToSpeech test = new TextToSpeech();
+                    //System.out.println("Your message says: "+ userText);
                     test.speak("Your message says: "+ userText, outputFileIndex);
                     outputFileIndex += 1;
                 } catch (Exception e1) {
@@ -117,6 +118,7 @@ public class Main {
                 try {
                     System.out.println("HERE");
                     TextToSpeech test = new TextToSpeech();
+                    //System.out.println("Your message now says: "+ userText);
                     test.speak("It now says: "+ userText, outputFileIndex);
                     outputFileIndex += 1;
                 } catch (Exception e1) {
@@ -132,7 +134,7 @@ public class Main {
         //
         //
         //
-        // System.out.println("Enter inital text");
+        // System.out.println("Enter initial text");
         // //input.nextLine();
         //
         // //String userText = recordInitialMessage(speechClient);

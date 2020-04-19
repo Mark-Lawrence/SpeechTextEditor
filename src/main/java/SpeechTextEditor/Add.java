@@ -17,7 +17,6 @@ public class Add extends Modifier{
     }
 
     public String doModification() {
-    	System.out.println(newPart);
         if (newPart != "" && wordReference != "" && locationReference != "") {
 //			System.out.println("New part, word reference, location reference");
 //			System.out.println("insert desk to the right of computer");
@@ -39,9 +38,10 @@ public class Add extends Modifier{
     private String addWordAtLocation() {
         String originalText = getOriginalText();
         String newText = originalText;
-        originalText = originalText.toLowerCase();
+        originalText = originalText.toLowerCase(); 
         if (originalText.contains(wordReference.toLowerCase())){
-            int index = originalText.indexOf(wordReference.toLowerCase());
+        	int index = originalText.indexOf(wordReference.toLowerCase());
+            String[] addBetween = new String[wordReference.length()]; 
             if (locationReference.equals("after")) {
                 if (originalText.length() > (index+1+wordReference.length())) {
                     return originalText.substring(0, index+wordReference.length())+" "+newPart+" "+originalText.substring(index+1+wordReference.length(), originalText.length());
@@ -54,7 +54,10 @@ public class Add extends Modifier{
                 } else {
                     return newPart+" "+originalText.substring(index, originalText.length());
                 }
-            }
+            } else if (locationReference.equals("between")) {
+            	addBetween = wordReference.split(" ", 2);
+            	return originalText.substring(0, index+addBetween[0].length()) + " " + newPart + " " + originalText.substring(index+1+addBetween[0].length(), originalText.length());
+            } 
         }
         return newText;
     }

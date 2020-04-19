@@ -114,7 +114,7 @@ public class DetectIntentAudio {
                     numberReference = fields.get("ordinal").getStringValue();
                 }
                 newModifier = new Delete(originalPart, numberOfDeletes, numberReference, originalText);
-            }
+              } 
         }
 
         return newModifier;
