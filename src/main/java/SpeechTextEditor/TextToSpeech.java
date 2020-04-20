@@ -34,7 +34,7 @@ public class TextToSpeech {
     private static AudioFormat audioFormat;
     private static SourceDataLine sourceLine;
 
-public void speak(String textToSpeak, int index) throws Exception {
+public static void speak(String textToSpeak, int index) throws Exception {
  // Instantiates a client
  try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
    // Set the text input to be synthesized

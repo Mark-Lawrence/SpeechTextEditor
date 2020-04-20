@@ -70,8 +70,8 @@ public class InfiniteStreamRecognize {
 
 	      @Override
 	      public void run() {
-	        System.out.println(YELLOW);
-	        System.out.println("Start speaking...Press Ctrl-C to stop");
+	        //System.out.println(YELLOW);
+	        System.out.println("Listening for wake word");
 	        targetDataLine.start();
 	        byte[] data = new byte[BYTES_PER_BUFFER];
 	        while (targetDataLine.isOpen()) {
@@ -125,15 +125,15 @@ public class InfiniteStreamRecognize {
 	                    alternative.getConfidence());
 	                if (alternative.getTranscript().contains("start")) {
 	                	System.out.println("Start program");
-	                	targetDataLine.close();
+	                	//targetDataLine.close();
 	                	keepRecording = false;
 	                	//SpeechClient/
 	                }
 	                isFinalEndTime = resultEndTimeInMS;
 	                lastTranscriptWasFinal = true;
 	              } else {
-	                System.out.print(RED);
-	                System.out.print("\033[2K\r");
+	                //System.out.print(RED);
+	                //System.out.print("\033[2K\r");
 	                System.out.printf(
 	                    "%s: %s", convertMillisToDate(correctedTime), alternative.getTranscript());
 	                lastTranscriptWasFinal = false;
@@ -218,8 +218,8 @@ public class InfiniteStreamRecognize {
 	                    .setStreamingConfig(streamingRecognitionConfig)
 	                    .build();
 
-	            System.out.println(YELLOW);
-	            System.out.printf("%d: RESTARTING REQUEST\n", restartCounter * STREAMING_LIMIT);
+	            //System.out.println(YELLOW);
+	            //System.out.printf("%d: RESTARTING REQUEST\n", restartCounter * STREAMING_LIMIT);
 
 	            startTime = System.currentTimeMillis();
 
@@ -266,12 +266,16 @@ public class InfiniteStreamRecognize {
 	          }
 	          clientStream.send(request);
 	          
-	          System.out.print(" ");
-	          if (!keepRecording) {
-		          System.out.println("RETURNING");
-	        	  return;
-	          }
+//	          System.out.print("");
+//	          if (!keepRecording) {
+//		          System.out.println("RETURNING");
+//	        	  return;
+//	          }
 	        }
+	        System.out.println("closing line");
+	        targetDataLine.stop();
+	        targetDataLine.close();
+	        
 	        
 	      } catch (Exception e) {
 	        System.out.println(e);

@@ -100,17 +100,21 @@ public class Main {
             	botIsActive = true;
                 System.out.println("Wake word said");
                 
-                System.out.println("Starting NOW");
                 startInitialRecording = false;
-
+                try {
+					TextToSpeech.speak("What would you like to say?",-1);
+				} catch (Exception e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
                 // Gives the user a few seconds to say the wake word and record an initial
                 // message. about 5 sec (1 sec = 2000).
+                System.out.println("Starting NOW");
                 userText = recordInitialMessage();
 
                 headerLabel.setText(userText);
                 try {
-                    TextToSpeech test = new TextToSpeech();
-                    test.speak("Your message says: "+ userText, outputFileIndex);
+                    TextToSpeech.speak("Your message says: "+ userText, outputFileIndex);
                     outputFileIndex += 1;
                 } catch (Exception e1) {
                     e1.printStackTrace();
@@ -189,29 +193,42 @@ public class Main {
         }
     }
 
+//    public static String recordInitialMessage() {
+//        SpeechClient speechClient = null;
+//        try {
+//            speechClient = SpeechClient.create();
+//        } catch (IOException e1) {
+//            // TODO Auto-generated catch block
+//            e1.printStackTrace();
+//        }
+//        JavaSoundRecorder.captureSpeech();
+//        System.out.println(SpeechToText.sampleRecognize(speechClient));
+//        if (!botIsActive && isActive(SpeechToText.sampleRecognize(speechClient))) {
+//            // Set botIsActive to true
+//            System.out.println("Bot is active");
+//            botIsActive = true;
+//            // record initial message again and accept whatever message it is
+//            return recordInitialMessage();
+//        } else {
+//            if (botIsActive) {
+//                return SpeechToText.sampleRecognize(speechClient);
+//            }
+//            return recordInitialMessage();
+//        }
+//    }
+    
     public static String recordInitialMessage() {
-        SpeechClient speechClient = null;
+    	SpeechClient speechClient = null;
         try {
             speechClient = SpeechClient.create();
         } catch (IOException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-        JavaSoundRecorder.captureSpeech();
-        System.out.println(SpeechToText.sampleRecognize(speechClient));
-        if (!botIsActive && isActive(SpeechToText.sampleRecognize(speechClient))) {
-            // Set botIsActive to true
-            System.out.println("Bot is active");
-            botIsActive = true;
-            // record initial message again and accept whatever message it is
-            return recordInitialMessage();
-        } else {
-            if (botIsActive) {
-                return SpeechToText.sampleRecognize(speechClient);
-            }
-            return recordInitialMessage();
-        }
+    	JavaSoundRecorder.captureSpeech();
+        return SpeechToText.sampleRecognize(speechClient);
     }
+
 
     public static String recordAudio() {
         SessionsClient sessionsClient = null;
