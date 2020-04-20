@@ -52,7 +52,8 @@ public class Main {
     public static void main(String[] args) {
 
         System.out.println("Initializing....");
-
+        
+        
         JFrame f = new JFrame("Voice Text Editor");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setLayout(new GridLayout(2, 1));
@@ -89,6 +90,15 @@ public class Main {
         while (true) {
 
             if (startInitialRecording) {
+            	try {
+        			InfiniteStreamRecognize.infiniteStreamingRecognize("en-US");
+        		} catch (Exception e1) {
+        			// TODO Auto-generated catch block
+        			e1.printStackTrace();
+        		}
+            	botIsActive = true;
+                System.out.println("Wake word said");
+                
                 System.out.println("Starting NOW");
                 startInitialRecording = false;
 
@@ -130,6 +140,7 @@ public class Main {
         // //recordAudio();
         //
         // } while (true);
+         
 
     }
 

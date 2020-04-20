@@ -63,6 +63,7 @@ public class JavaSoundRecorder {
             numBytesRead = line.read(data, 0, data.length);
             // Save this chunk of data.
             counter += numBytesRead;
+            
             // System.out.println("DATA: " + data[0]);
             out.write(data, 0, numBytesRead);
         }
