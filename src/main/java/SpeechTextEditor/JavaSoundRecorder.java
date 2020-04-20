@@ -58,18 +58,38 @@ public class JavaSoundRecorder {
         // A short timer at first (for conitinuous recording) and then a longer timer
         // (or wait for a pause) after data changes to a value larger than 0 or less
         // than -1
-        while (thread.waitForUser.isAlive()) {
+        boolean spoke = false;
+        Date lastSpokeTime = new Date();
+        //float elapsedTime = new Date().getTime() - startTime.getTime();
+        
+        while (thread.waitForUser.isAlive() || spoke) {
             // Read the next chunk of data from the TargetDataLine.
             numBytesRead = line.read(data, 0, data.length);
             // Save this chunk of data.
             counter += numBytesRead;
-            
+            if (data[0] < -2 || data[0] > 2) {
+            	spoke = true;
+            	lastSpokeTime = new Date();
+            	System.out.println("Speaking now");
+            } else if (spoke){
+            	float elapsedTimeSinceLastTalk = new Date().getTime() - lastSpokeTime.getTime();
+            	//System.out.println("now silent for "+elapsedTimeSinceLastTalk);
+
+            	if (elapsedTimeSinceLastTalk > 2000) {
+            		System.out.println("DONE talking");
+            		break;
+            	}
+            }
             // System.out.println("DATA: " + data[0]);
             out.write(data, 0, numBytesRead);
         }
+        System.out.println(spoke);
         line.stop();
         line.close();
         System.out.println("Done capturing...");
+        if (!spoke) {
+        	start();
+        }
         byte[] fileData = out.toByteArray();
         InputStream inputStreamFile = new ByteArrayInputStream(fileData);
 
@@ -103,6 +123,7 @@ class WaitForUserStopRecording implements Runnable {
             elapsedTime = new Date().getTime() - startTime.getTime();
             // i++;
 
-        } while (Main.isRecording && elapsedTime < 10 * 1000);
+        } while (Main.isRecording && elapsedTime < 5 * 1000);
+        System.out.println("Timed out");
     }
 }

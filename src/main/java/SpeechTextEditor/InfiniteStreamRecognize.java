@@ -116,13 +116,14 @@ public class InfiniteStreamRecognize {
 
 	              SpeechRecognitionAlternative alternative = result.getAlternativesList().get(0);
 	              if (result.getIsFinal()) {
-	                System.out.print(GREEN);
-	                System.out.print("\033[2K\r");
-	                System.out.printf(
-	                    "%s: %s [confidence: %.2f]\n",
-	                    convertMillisToDate(correctedTime),
-	                    alternative.getTranscript(),
-	                    alternative.getConfidence());
+	               // System.out.print(GREEN);
+	               // System.out.print("\033[2K\r");
+//	                System.out.printf(
+//	                    "%s: %s [confidence: %.2f]\n",
+//	                    convertMillisToDate(correctedTime),
+//	                    alternative.getTranscript(),
+//	                    alternative.getConfidence());
+	            	  System.out.println(alternative.getTranscript());
 	                if (alternative.getTranscript().contains("start")) {
 	                	System.out.println("Start program");
 	                	//targetDataLine.close();
