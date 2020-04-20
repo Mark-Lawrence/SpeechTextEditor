@@ -23,6 +23,11 @@
             <artifactId>google-cloud-dialogflow</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+        	<groupId>com.google.cloud</groupId>
+        	<artifactId>google-cloud-texttospeech</artifactId>
+        	<version>1.0.0</version>
+        </dependency>
     </dependencies>
     <build>
         <defaultGoal>install</defaultGoal>

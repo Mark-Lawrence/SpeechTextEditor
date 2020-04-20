@@ -1,3 +1,4 @@
+
 SpeechTextEditor\Modifier.class
 SpeechTextEditor\InfiniteStreamRecognize$1MicBuffer.class
 SpeechTextEditor\InfiniteStreamRecognize.class
@@ -6,8 +7,4 @@ SpeechTextEditor\Change.class
 SpeechTextEditor\DetectIntentAudio.class
 SpeechTextEditor\Delete.class
 SpeechTextEditor\InfiniteStreamRecognize$1.class
-SpeechTextEditor\Add.class
-SpeechTextEditor\SpeechToText.class
-SpeechTextEditor\DetectIntentStream.class
-SpeechTextEditor\WaitForUserStopRecording.class
 SpeechTextEditor\Main.class
