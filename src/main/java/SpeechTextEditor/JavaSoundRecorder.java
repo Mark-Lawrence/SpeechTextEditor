@@ -12,7 +12,7 @@ public class JavaSoundRecorder {
 
     AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
     static boolean stopped = false;
-    TargetDataLine line;
+    
 
     public static void captureSpeech() {
         stopped = false;
@@ -43,7 +43,7 @@ public class JavaSoundRecorder {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format); // format is an AudioFormat object
 
-        line = (TargetDataLine) AudioSystem.getLine(info);
+        TargetDataLine line = (TargetDataLine) AudioSystem.getLine(info);
         line.open(format);
 
         int numBytesRead = 0;
@@ -88,7 +88,8 @@ public class JavaSoundRecorder {
         line.close();
         System.out.println("Done capturing...");
         if (!spoke) {
-        	start();
+        	captureSpeech();
+        	return;
         }
         byte[] fileData = out.toByteArray();
         InputStream inputStreamFile = new ByteArrayInputStream(fileData);
@@ -96,6 +97,7 @@ public class JavaSoundRecorder {
         AudioInputStream imputStream = new AudioInputStream(inputStreamFile, format, counter);
 
         try {
+        	System.out.println("Saving to file");
             AudioSystem.write(imputStream, fileType, wavFile);
         } catch (IOException e) {
             // TODO Auto-generated catch block

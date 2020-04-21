@@ -74,13 +74,13 @@ public class DetectIntentAudio {
         // System.out.println("====================");
         // System.out.format("Query Text: '%s'\n", queryResult.getQueryText());
         // System.out.format("Detected Intent: %s (confidence: %f)\n",
-        // queryResult.getIntent().getDisplayName(),
         // queryResult.getIntentDetectionConfidence());
         // System.out.format("Fulfillment Text: '%s'\n",
         // queryResult.getFulfillmentText());
 
         System.out.println(queryResult.getQueryText());
-
+        String intent = queryResult.getIntent().getDisplayName();
+        System.out.println(intent);
         Struct parameters = queryResult.getParameters();
 
         Map<String, Value> fields = parameters.getFieldsMap();
@@ -114,8 +114,10 @@ public class DetectIntentAudio {
                     numberReference = fields.get("ordinal").getStringValue();
                 }
                 newModifier = new Delete(originalPart, numberOfDeletes, numberReference, originalText);
-              } 
-        }
+              }  
+        } else if (intent.equals("Send")) {
+     	   newModifier = new Send(originalText);
+       }
 
         return newModifier;
 
