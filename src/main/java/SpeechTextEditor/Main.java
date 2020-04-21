@@ -59,7 +59,7 @@ public class Main {
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setLayout(new GridLayout(2, 1));
         f.setSize(400, 400);
-        headerLabel = new JLabel("What do you want to say", JLabel.CENTER);
+        headerLabel = new JLabel("Say \"Start\" to begin.", JLabel.CENTER);
 
         recordButton = new JButton("Dictate");
         recordButton.setSize(100, 70);
@@ -125,15 +125,19 @@ public class Main {
                 System.out.println("Capture modification");
                 // startRecodingAudio = false;
                 recordAudio();
-                headerLabel.setText(userText);
-                try {
-                    System.out.println("HERE");
-                    TextToSpeech.speak("It now says: "+ userText, outputFileIndex);
-                    outputFileIndex += 1;
-                } catch (Exception e1) {
-                    e1.printStackTrace();
+                if (!userText.equals("SEND")) {
+                	headerLabel.setText(userText);
+                    try {
+                        System.out.println("HERE");
+                        TextToSpeech.speak("It now says: "+ userText, outputFileIndex);
+                        outputFileIndex += 1;
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                } else {
+                	headerLabel.setText("Say \"Start\" to begin.");
                 }
-
+               
             }
         }
     }
@@ -169,8 +173,15 @@ public class Main {
 
             // SpeechTextEditor.Modifier newModifier =
             // detectIntentTexts("texteditor-vvvhmi", text, "123456789", "en-US", userText);
+            String oldMessage = userText;
             if (newModifier != null) {
                 userText = newModifier.doModification();
+                if (userText == "SEND"){
+                    TextToSpeech.speak("Sending message "+ oldMessage, outputFileIndex);
+                    outputFileIndex += 1;
+                    startRecodingAudio = false;
+                    startInitialRecording = true;
+                }
                 // System.out.println(userText);
 
             } else {

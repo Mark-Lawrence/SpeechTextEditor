@@ -88,7 +88,7 @@ public class InfiniteStreamRecognize {
 	        System.out.println("Thread is done recording");
 	      }
 	    }
-
+	    keepRecording = true;
 	    // Creating microphone input buffer thread
 	    MicBuffer micrunnable = new MicBuffer();
 	    Thread micThread = new Thread(micrunnable);
@@ -266,12 +266,6 @@ public class InfiniteStreamRecognize {
 	            audioInput.add(tempByteString);
 	          }
 	          clientStream.send(request);
-	          
-//	          System.out.print("");
-//	          if (!keepRecording) {
-//		          System.out.println("RETURNING");
-//	        	  return;
-//	          }
 	        }
 	        System.out.println("closing line");
 	        targetDataLine.stop();
