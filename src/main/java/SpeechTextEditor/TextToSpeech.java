@@ -34,12 +34,11 @@ public class TextToSpeech {
     private static AudioFormat audioFormat;
     private static SourceDataLine sourceLine;
 
-public void speak(String textToSpeak, int index) throws Exception {
+public static void speak(String textToSpeak, int index) throws Exception {
  // Instantiates a client
  try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
    // Set the text input to be synthesized
    SynthesisInput input = SynthesisInput.newBuilder().setText(textToSpeak).build();
-   System.out.println(input.getText());
    // Build the voice request, select the language code ("en-US") and the ssml voice gender
    // ("neutral")
    VoiceSelectionParams voice =
@@ -64,8 +63,6 @@ public void speak(String textToSpeak, int index) throws Exception {
    // Write the response to the output file.
    try (OutputStream out = new FileOutputStream("output"+index+".wav")) {
      out.write(audioContents.toByteArray());
-     System.out.println(textToSpeak);
-     System.out.println("Audio content written to file \"output"+index+".wav\"");
      playSound(System.getProperty("user.dir")+"\\output"+index+".wav");
    }
  }

@@ -53,7 +53,8 @@ public class Main {
     public static void main(String[] args) {
 
         System.out.println("Initializing....");
-
+        
+        
         JFrame f = new JFrame("Voice Text Editor");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setLayout(new GridLayout(2, 1));
@@ -88,36 +89,46 @@ public class Main {
         // f.add(recordButton);
         f.setVisible(true);
         while (true) {
-
             if (startInitialRecording) {
-                System.out.println("Starting NOW");
+            	System.out.println("Waiting for wake word (start)");
+            	try {
+        			InfiniteStreamRecognize.infiniteStreamingRecognize("en-US");
+        		} catch (Exception e1) {
+        			// TODO Auto-generated catch block
+        			e1.printStackTrace();
+        		}
+            	botIsActive = true;
+                System.out.println("Wake word said");
+                
                 startInitialRecording = false;
-
-                // Gives the user a few seconds to say the wake word and record an initial
-                // message. about 5 sec (1 sec = 2000).
+                try {
+					TextToSpeech.speak("What would you like to say?",-1);
+				} catch (Exception e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+                
+                System.out.println("Recording inital message");
                 userText = recordInitialMessage();
 
                 headerLabel.setText(userText);
                 try {
-                    TextToSpeech test = new TextToSpeech();
-                    test.speak("Your message says: "+ userText, outputFileIndex);
+                    TextToSpeech.speak("Your message says: "+ userText+". Make any modifications you would like, or send.", outputFileIndex);
                     outputFileIndex += 1;
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
-                System.out.println(startRecodingAudio);
                 startRecodingAudio = true;
             }
 
             if (startRecodingAudio) {
-                System.out.println("Starting NOW 2");
+                System.out.println("Capture modification");
                 // startRecodingAudio = false;
                 recordAudio();
                 headerLabel.setText(userText);
                 try {
                     System.out.println("HERE");
-                    TextToSpeech test = new TextToSpeech();
-                    test.speak("It now says: "+ userText, outputFileIndex);
+                    TextToSpeech.speak("It now says: "+ userText, outputFileIndex);
                     outputFileIndex += 1;
                 } catch (Exception e1) {
                     e1.printStackTrace();
@@ -126,81 +137,21 @@ public class Main {
             }
         }
 
-        // Scanner input = new Scanner(System.in);
-        //
-        //
-        //
-        //
-        //
-        // System.out.println("Enter inital text");
-        // //input.nextLine();
-        //
-        // //String userText = recordInitialMessage(speechClient);
-        // String userText = "Do you want to go to the park";
-        // //String userText = input.nextLine();
-        // // System.out.println(userText);
-        //
-        // do {
-        // // System.out.println("What edits do you want to make?");
-        // //input.nextLine();
-        // //recordAudio();
-        //
-        // } while (true);
-
     }
 
-    public static boolean isActive(String text) {
-        float elapsedTime = new Date().getTime() - startTime.getTime();
-        System.out.println(elapsedTime);
-
-        if (elapsedTime > SLEEP_TIME) {
-            // go to sleep
-            startTime = new Date();
-            botIsActive = false;
-            startRecodingAudio = true;
-        }
-
-        if (botIsActive) {
-            // in active conversation, so stay awake
-            startTime = new Date();
-            return true;
-        } else {
-            // we are asleep - did we get a wake up call?
-            if (text.toLowerCase().indexOf(wakeWord) > -1) {
-                // time to wake up
-                System.out.println("App just woke up");
-                botIsActive = true;
-            } else {
-                // false alarm, go back to sleep
-                System.out.println("App needs the wake up command");
-            }
-            return botIsActive;
-        }
-    }
-
+    
     public static String recordInitialMessage() {
-        SpeechClient speechClient = null;
+    	SpeechClient speechClient = null;
         try {
             speechClient = SpeechClient.create();
         } catch (IOException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-        JavaSoundRecorder.captureSpeech();
-        System.out.println(SpeechToText.sampleRecognize(speechClient));
-        if (!botIsActive && isActive(SpeechToText.sampleRecognize(speechClient))) {
-            // Set botIsActive to true
-            System.out.println("Bot is active");
-            botIsActive = true;
-            // record initial message again and accept whatever message it is
-            return recordInitialMessage();
-        } else {
-            if (botIsActive) {
-                return SpeechToText.sampleRecognize(speechClient);
-            }
-            return recordInitialMessage();
-        }
+    	JavaSoundRecorder.captureSpeech();
+        return SpeechToText.sampleRecognize(speechClient);
     }
+
 
     public static String recordAudio() {
         SessionsClient sessionsClient = null;
