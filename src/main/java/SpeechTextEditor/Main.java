@@ -32,7 +32,7 @@ import java.util.Date;
 
 public class Main {
     // V.A.L.E == Voice Activated Language Editor
-    static String wakeWord = "okay vale";
+    static String wakeWord = "start";
     static int SLEEP_TIME = 10 * 1000;
     static Date startTime = new Date();
     static boolean botIsActive = false;
@@ -136,9 +136,7 @@ public class Main {
 
             }
         }
-
     }
-
     
     public static String recordInitialMessage() {
     	SpeechClient speechClient = null;

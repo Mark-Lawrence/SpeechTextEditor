@@ -3,6 +3,7 @@ SpeechTextEditor\Modifier.class
 SpeechTextEditor\InfiniteStreamRecognize$1MicBuffer.class
 SpeechTextEditor\InfiniteStreamRecognize.class
 SpeechTextEditor\JavaSoundRecorder.class
+SpeechTextEditor\Main$1.class
 SpeechTextEditor\Change.class
 SpeechTextEditor\DetectIntentAudio.class
 SpeechTextEditor\Delete.class

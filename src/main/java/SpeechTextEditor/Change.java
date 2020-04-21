@@ -16,7 +16,8 @@ public class Change extends Modifier{
 
 
     public String doModification() {
-        if (originalPart != "" && newPart != "") {
+    	wordLocation = wordLocation.replaceAll("\\P{Print}","");
+    	if (originalPart != "" && newPart != "" && (!wordLocation.trim().equals("all") && !wordLocation.trim().equals("every"))) {
             return changeWords();
         } else if (wordLocation != "" && newPart != "") {
             return changeWordAtLocation();
@@ -26,8 +27,8 @@ public class Change extends Modifier{
         return getOriginalText();
     }
 
-    private String changeWords() {
-        String originalText = getOriginalText();
+    private String changeWords() { 	
+    	String originalText = getOriginalText();
         String newText = originalText;
         originalText = originalText.toLowerCase();
         if (originalText.contains(originalPart.toLowerCase())){
@@ -41,14 +42,22 @@ public class Change extends Modifier{
         String originalText = getOriginalText();
         String newText = originalText;
         int changeIndex = 0;
+        
         try {
-            changeIndex = ((int) Double.parseDouble(wordLocation))-1;
-            String[] splitOriginal = originalText.split(" ");
+        	String[] splitOriginal = originalText.split(" ");
             newText = "";
+            
+        	if(wordLocation.trim().equals("all") || wordLocation.trim().equals("every")) {
+            	changeIndex = -1;
+            } else {
+            	changeIndex = ((int) Double.parseDouble(wordLocation))-1;
+            }
 
             for (int i = 0; i < splitOriginal.length; i++) {
                 if (i == changeIndex) {
                     newText += newPart;
+                } else if(splitOriginal[i].equals(originalPart) && changeIndex == -1) {
+                	newText += newPart;
                 } else {
                     newText += splitOriginal[i];
                 }
