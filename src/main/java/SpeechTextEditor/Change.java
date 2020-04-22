@@ -56,7 +56,7 @@ public class Change extends Modifier{
             for (int i = 0; i < splitOriginal.length; i++) {
                 if (i == changeIndex) {
                     newText += newPart;
-                } else if(splitOriginal[i].equals(originalPart) && changeIndex == -1) {
+                } else if(splitOriginal[i].equalsIgnoreCase(originalPart) && changeIndex == -1) {
                 	newText += newPart;
                 } else {
                     newText += splitOriginal[i];

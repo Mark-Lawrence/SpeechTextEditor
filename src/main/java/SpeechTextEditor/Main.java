@@ -113,6 +113,7 @@ public class Main {
 
                 headerLabel.setText(userText);
                 try {
+                	System.out.println("Speaking");
                     TextToSpeech.speak("Your message says: "+ userText+". Make any modifications you would like, or send.", outputFileIndex);
                     outputFileIndex += 1;
                 } catch (Exception e1) {
